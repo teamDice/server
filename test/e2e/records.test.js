@@ -27,13 +27,13 @@ const save = (path, data, token) => {
         .then(({ body }) => body);
 };
 
-describe('the Matches API', () => {
+describe('the Records API', () => {
 
     beforeEach(() => dropCollection('users'));
-    beforeEach(() => dropCollection('gameHistory'));
+    beforeEach(() => dropCollection('records'));
     beforeEach(() => dropCollection('profiles'));
 
-    let token1, token2, profile1, profile2, match;
+    let token1, token2, profile1, profile2, record;
 
     beforeEach(() => {
         return request
@@ -63,44 +63,16 @@ describe('the Matches API', () => {
         const player2Id = profile2._id;
         const data = {
             players: [player1Id, player2Id],
-            game: {
-                [player1Id]: {
-                    troops: 2,
-                    wins: 2
-                },
-                [player2Id]: {
-                    troops: 1,
-                    wins: 1
-                },
-                winner: player1Id
-            },
+            winnerId: player1Id
         };
-        return save('matches', data, token1)
+        return save('records', data, token1)
             .then(data => {
-                match = data;
+                record = data;
             });
     });
 
-    it('posts shit', () => {
-        assert.equal(match.players.length, 2);
+    it('posts stuff', () => {
+        assert.equal(record.players.length, 2);
     });
 
-<<<<<<< HEAD
-    it('GETS user\'s stats', () => {
-        return request
-            .get(`/api/matches/stats/${profile1._id}`)
-            // .set('Authorization', token1)
-            .then(checkOk)
-            .then(({ body }) => {
-                console.log('BODY', body);
-                assert.deepEqual(body, { totalWins: 1, totalGames: 1 });
-            });
-    });
-=======
-    // it('gets a match out of the database by id', () => {
-    //     return request
-    //         .get(`/api/matches/${}`)
-    //         .then(checkOk)
-    // })
->>>>>>> b20da33656f03b2d4cfee009b5e2192d72626406
 });

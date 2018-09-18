@@ -25,7 +25,7 @@ describe('Auth API', () => {
     it('will signup a user', () => {
         assert.ok(token);
         assert.equal(profile.name, 'tester');
-        assert.equal(profile.rank, 'Captain');
+        assert.equal(profile.greeting, 'Hello');
     });
 
     it('verifies', () => {

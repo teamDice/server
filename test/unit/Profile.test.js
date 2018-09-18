@@ -10,7 +10,7 @@ describe('Profile model', () => {
         const expected = {
             name: 'tester',
             avatar: 'avatar.png',
-            rank: 'Captain',
+            greeting: 'Hello',
             location: ''
         };
         const profile = new Profile(data);
