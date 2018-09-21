@@ -9,44 +9,46 @@ const checkOk = res => {
 
 describe('Profile API', () => {
 
-    before(() => dropCollection('profile'));
-    before(() => dropCollection('users'));
+    beforeEach(() => dropCollection('profiles'));
+    beforeEach(() => dropCollection('users'));
 
     let token = '';
-    before(() => createToken().then(t => token = t));
+    beforeEach(() => createToken().then(t => token = t));
 
-    const profile1 = {
+    const expectedProfile = {
         name: 'Arthur',
         avatar: 'avatar.png',
-        location: 'Portland',
-        greeting: 'Prepare to Lose'
+        location: '',
+        greeting: 'Hello'
     };
 
-    it.only('gets a profile', () => {
-        console.log('toke', token);
+    it('gets a profile', () => {
         return request
             .get('/api/profile')
             .set('Authorization', token)
+            .then(checkOk)
             .then(({ body }) => {
-                // assert.isOk(body);
-                console.log('body', body);
-                // assert.deepEqual(body, profile1);
+                const { avatar, greeting, location, name } = body;
+                assert.deepEqual({ avatar, greeting, location, name }, expectedProfile);
             });
     });      
 
 
     it('updates a profile', () => {
-        profile1.greeting = 'I am a Winner!';
+        const updatedProfile = {
+            name: 'Arthur',
+            avatar: 'shark.png',
+            location: 'Portland',
+            greeting: 'Bye'
+        };
 
-        return request.put(`/api/profile/${profile1._id}`)
-            .send(profile1)
+        return request.put('/api/profile/')
+            .send(updatedProfile)
+            .set('Authorization', token)
             .then(checkOk)
             .then(({ body }) => {
-                assert.deepEqual(body, profile1);
-                return request.get(`/api/profile/${profile1._id}`);
-            })
-            .then(({ body }) => {
-                assert.equal(body.profile1, profile1.greeting);
+                const { avatar, greeting, location, name } = body;
+                assert.deepEqual({ avatar, greeting, location, name }, updatedProfile);
             });
     });
 });
