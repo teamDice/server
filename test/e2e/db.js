@@ -14,7 +14,7 @@ module.exports = {
             });
     },
 
-    createToken(data = { email: 'me@me.com', password: 'abc' }) {
+    createToken(data = { name: 'Arthur', email: 'me@me.com', password: 'abc' }) {
         return request
             .post('/api/auth/signup')
             .send(data)
